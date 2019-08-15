@@ -1,6 +1,6 @@
 'use-strict'
 
-import globals from './config.js'
+import {globals} from './config.js'
 import express from 'express'
 
 const app = express()
