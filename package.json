@@ -1,0 +1,24 @@
+{
+  "name": "spotisync",
+  "version": "1.0.0",
+  "description": "A simple program that will play the same song on two different devices using two different spotify accounts",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --experimental-modules server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erhant/spotisync.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/erhant/spotisync/issues"
+  },
+  "homepage": "https://github.com/erhant/spotisync#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
