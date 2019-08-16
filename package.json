@@ -19,7 +19,10 @@
   },
   "homepage": "https://github.com/erhant/spotisync#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "request": "^2.88.0"
   },
   "devDependencies": {
     "standard": "^13.1.0"
