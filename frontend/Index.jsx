@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Axios from 'axios'
+import axios from 'axios'
 import './Index.css'
 
 import UserCard from './Components/Organisms/UserCard/index.jsx'

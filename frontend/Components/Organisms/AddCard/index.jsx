@@ -5,7 +5,7 @@ import './index.css'
 export default class AddCard extends React.Component {
   render () {
     return (
-      <div className={'AddCard'}><button>Add</button></div>
+      <div className={'AddCard'}><a href='/login'><Text type={'h1'} content={'Add User'}/></a></div>
     )
   }
 }
