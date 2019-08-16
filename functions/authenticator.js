@@ -9,24 +9,24 @@ import request from 'request'
 const clientId = globals.clientId // Your client id
 const clientSecret = globals.clientSecret // Your secret
 const redirectURI = globals.redirectURI // Your redirect uri
-const scope = globals.scope // Your scope
+const scopes = globals.scopes // Your scopes
 const stateKey = globals.stateKey
 
 
 export function authenticator (req, res) {
-  console.log('Authenticator function was called')
-
   const state = generateRandomString(16)
   res.cookie(stateKey, state)
+
 
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
       client_id: clientId,
-      scope: scope,
+      scope: scopes,
       redirect_uri: redirectURI,
       state: state
     }))
+
 }
 
 export function tokenRetriever (req, res) {
@@ -59,7 +59,7 @@ export function tokenRetriever (req, res) {
       if (!error && response.statusCode === 200) {
         // User is authorized correctly
         const accessToken = body.access_token
-        const refreshToken = body.refresh_token      
+        const refreshToken = body.refresh_token
         manager.addUser(accessToken, refreshToken);
       }
     })
