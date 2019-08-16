@@ -1,0 +1,38 @@
+.AddCard {
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-bottom: 20px;
+  margin-right: 10px;
+  width: 500px;
+  min-width: 500px;
+  height: calc(100vh - 20px - 20px);
+  border-radius: 15px;
+  border-width: thin;
+  border-color: black;
+  border-style: dashed;
+  text-align: center;
+}
+
+@media (width < calc(500px - 2vw - 2vw)) {
+  .AddCard {
+    width: calc(100vw - 2vw - 2vw);
+    min-width: 100vw;
+  }
+}
+
+.AddCard > h1 {
+  transform: translateY(45vh);
+  font-size: 40px;
+}
+
+.AddCard > button {
+  transform: translateY(45vh);
+  height: 200px;
+  width: 200px;
+  background-color: white;
+}
+
+.AddCard > button:hover {
+  transition-duration: 0.4s;
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
