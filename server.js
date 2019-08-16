@@ -1,4 +1,4 @@
-'use strict'
+"use strict"
 
 import { globals } from './config.js'
 import { authenticator, tokenRetriever } from './functions/authenticator.js'
