@@ -1,6 +1,8 @@
 "use strict"
 
 import { globals } from './../config.js'
+import { generateRandomString } from './utils.js'
+import * as manager from './manager.js'
 import querystring from 'querystring'
 import request from 'request'
 
@@ -8,15 +10,8 @@ const clientId = globals.clientId // Your client id
 const clientSecret = globals.clientSecret // Your secret
 const redirectURI = globals.redirectURI // Your redirect uri
 const scope = globals.scope // Your scope
-const stateKey = globals.stateKey // TODO: transfer this to global?
+const stateKey = globals.stateKey
 
-// TODO: move this to utils
-function generateRandomString (length) {
-  let text = ''
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  for (let i = 0; i < length; i++) { text += possible.charAt(Math.floor(Math.random() * possible.length)) }
-  return text
-}
 
 export function authenticator (req, res) {
   console.log('Authenticator function was called')
@@ -62,19 +57,10 @@ export function tokenRetriever (req, res) {
 
     request.post(authOptions, function (error, response, body) {
       if (!error && response.statusCode === 200) {
+        // User is authorized correctly
         const accessToken = body.access_token
-        const refreshToken = body.refresh_token
-
-        var options = {
-          url: 'https://api.spotify.com/v1/me',
-          headers: { Authorization: 'Bearer ' + accessToken },
-          json: true
-        }
-
-        // use the access token to access the Spotify Web API
-        request.get(options, function (error, response, body) {
-          console.log(body)
-        })
+        const refreshToken = body.refresh_token      
+        manager.addUser(accessToken, refreshToken);
       }
     })
   }
