@@ -1,6 +1,11 @@
 let userArray = [];
 import * as utils from './utils.js'
 
+export function exists(userId) {
+  let array = userArray.filter(x => x.info.id === userId)
+  return array.length > 0
+}
+
 export function addUser(accessToken, refreshToken, info) {
   userArray.push({
     accessToken: accessToken,
