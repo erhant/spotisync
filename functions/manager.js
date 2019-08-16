@@ -30,11 +30,12 @@ export function startTrack(req, res) {
       json: true
     }
 
-    request.get(options, function (error, response, body) {
+    request.put(options, function (error, response, body) {
+      console.log('Response status code: '+response.statusCode)
       if (error) {
          users.refresh(refreshToken);
       } else {
-         console.log('TRACK STARTED FOR '+index)
+         console.log('TRACK STARTED FOR '+user.info.id+'\n')
       }
     })
   })
@@ -50,14 +51,13 @@ export function stopTrack(req, res) {
       json: true
     }
 
-    request.get(options, function (error, response, body) {
+    request.put(options, function (error, response, body) {
+      console.log('Response status code: '+response.statusCode)
       if (error) {
+        console.log('ERROR');
          users.refresh(refreshToken);
       } else {
-         console.log('TRACK STOPPED FOR '+index+'\n')
-         console.log(response)
-         console.log('\n\nBODY\n')
-         console.log(body)
+         console.log('TRACK STOPPED FOR '+user.info.id+'\n')
       }
     })
   })
@@ -77,12 +77,13 @@ export function chooseTrack(req, res) {
       json: true
     }
 
-    request.get(options, function (error, response, body) {
+    request.put(options, function (error, response, body) {
+      console.log('Response status code: '+response.statusCode)
       if (error) {
-        console.log('Error in startTrack:\n' + error);
+        console.log('Error in startTrack');
          users.refresh(refreshToken);
       } else {
-         console.log('NEW TRACK STARTED FOR '+index)
+         console.log('NEW TRACK STARTED FOR '+user.info.id+'\n')
       }
     })
   })
