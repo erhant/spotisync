@@ -1,0 +1,32 @@
+.AddCard {
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-bottom: 20px;
+  margin-right: 10px;
+  width: 500px;
+  min-width: 500px;
+  height: calc(100vh - 20px - 20px);
+  border-radius: 15px;
+  border-width: thin;
+  border-color: black;
+  border-style: dashed;
+  text-align: center;
+}
+
+@media (width < calc(500px - 2vw - 2vw)) {
+  .AddCard {
+    width: calc(100vw - 2vw - 2vw);
+    min-width: 100vw;
+  }
+}
+
+.AddCard > h1 {
+  font-size: 40px;
+  height: 200px;
+  width: 200px;
+}
+
+.AddCard > a {
+  position: relative;
+  top: 50vh;
+}
