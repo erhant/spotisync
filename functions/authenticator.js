@@ -27,6 +27,7 @@ export function authenticator (req, res) {
       state: state
     }))
 
+    res.redirect('http://localhost'); // to give control back to react
 }
 
 export function tokenRetriever (req, res) {
