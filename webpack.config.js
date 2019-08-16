@@ -22,7 +22,7 @@ module.exports = {
     // Specify a host to use
     host: 'localhost', // String
     // Specify port
-    port: 8080, // Number
+    port: 80, // Number
     // Enable webpack's Hot Module Replacement feature
     hot: true, // Boolean
     // Scripts will be inserted in the bundle to take care of live reloading,

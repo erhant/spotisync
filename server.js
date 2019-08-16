@@ -20,11 +20,17 @@ app.get('/startTrack', (req, res) => { manager.startTrack(req, res) } )
 app.get('/stopTrack', (req, res) => { manager.stopTrack(req, res) } )
 app.get('/chooseTrack', (req, res) => { manager.chooseTrack(req, res) } )
 
+
 // Debug
 app.get('/debug/users', (req, res) => {
   let arr = getUsers(req, res)
   console.log(arr);
  })
  app.get('/debug/refreshUsers', (req, res) => { refreshUsers() } )
+app.get('/debug/playTrack', (req, res) => {
+  let trackURI = "spotify:track:3PJMsxg6rz9FOo6xNiASXz";
+  req.trackURI = trackURI;
+  manager.chooseTrack(req, res)
+})
 
 app.listen(globals.expressPort, () => console.log(`Express: listening on port ${globals.expressPort}!`))
