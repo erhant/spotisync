@@ -27,11 +27,10 @@ export function authenticator (req, res) {
       state: state
     }))
 
-    res.redirect('http://localhost'); // to give control back to react
 }
 
 export function tokenRetriever (req, res) {
-  console.log('i start token retrival')
+  console.log('Authorization succesfull, retrieving tokens.')
   const code = req.query.code || null
   const state = req.query.state || null
   const storedState = req.cookies ? req.cookies[stateKey] : null
@@ -63,6 +62,7 @@ export function tokenRetriever (req, res) {
         const refreshToken = body.refresh_token
         manager.addUser(accessToken, refreshToken);
       }
+      res.redirect('/'); // back to homepage
     })
   }
 }
