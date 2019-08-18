@@ -17,7 +17,7 @@ export function getUsers() {
   return userArray;
 }
 
-export function refreshUsers() {
+export function refresh() {
   // Find the user with the refresh token
   userArray.map((user) => {
     let newAccessToken = utils.refresh(user.refreshToken);
