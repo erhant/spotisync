@@ -3,6 +3,7 @@
 import request from 'request'
 import * as utils from './utils.js'
 import * as users from './users.js'
+import * as errorHandler from './errorHandler.js'
 
 export function addUser(accessToken, refreshToken) {
   let options = {
@@ -14,7 +15,7 @@ export function addUser(accessToken, refreshToken) {
   // use the access token to access the Spotify Web API
   request.get(options, function (error, response, body) {
     if (error) {
-       console.log('ERROR GETTING USER INFO')
+       errorHandler.handle(error, statusCode)
     } else {
         if (users.exists(body.id)) {
           console.log('User '+body.id+' exists.');
@@ -37,9 +38,9 @@ export function startTrack(req, res) {
     }
 
     await request.put(options, function (error, response, body) {
-      console.log('Response status code: '+response.statusCode)
+      responseHandler.decodeStatusCode(response.statusCode);
       if (error) {
-         users.refresh();
+         errorHandler.handle(error, statusCode);
       } else {
          console.log('TRACK STARTED FOR '+user.info.id+'\n')
       }
@@ -63,10 +64,9 @@ export function stopTrack(req, res) {
     }
 
     await request.put(options, function (error, response, body) {
-      console.log('Response status code: '+response.statusCode)
+      responseHandler.decodeStatusCode(response.statusCode);
       if (error) {
-        console.log('ERROR');
-         users.refresh();
+        errorHandler.handle(error, statusCode);
       } else {
          console.log('TRACK STOPPED FOR '+user.info.id+'\n')
       }
@@ -84,11 +84,10 @@ export function chooseTrack(req, res) {
   // read query string parameter
   if (req.query.id) {
     let spotifyURI = req.query.id;
-    console.log("SPOTIFY_URI: "+spotifyURI);
+    // console.log("SPOTIFY_URI: "+spotifyURI);
     let userArray = users.getUsers();
     userArray.forEach(async (user, index) => {
       let options = {};
-      let songinfoReqOptions = {};
       if (spotifyURI.includes("track")) {
         options = {
           url: 'https://api.spotify.com/v1/me/player/play',
@@ -98,11 +97,7 @@ export function chooseTrack(req, res) {
           },
           json: true
         }
-        // songinfoReqOptions = {
-        //   url: 'https://api.spotify.com/v1/tracks/',
-        //   headers: { Authorization: 'Bearer ' + user.accessToken },
-        //   json: true
-        // };
+
       } else {
         options = {
           url: 'https://api.spotify.com/v1/me/player/play',
@@ -110,19 +105,12 @@ export function chooseTrack(req, res) {
           context: spotifyURI,
           json: true
         }
-        // songinfoReqOptions = {
-        //   url: 'https://api.spotify.com/v1/me/player/play',
-        //   headers: { Authorization: 'Bearer ' + user.accessToken },
-        //   json: true
-        // };
       }
 
-
       await request.put(options, function (error, response, body) {
-        console.log('Response status code: '+response.statusCode)
+        responseHandler.decodeStatusCode(response.statusCode);
         if (error) {
-          console.log('Error in startTrack');
-           users.refresh();
+          errorHandler.handle(error);
         } else {
            console.log('NEW TRACK STARTED FOR '+user.info.id+'\n')
         }
