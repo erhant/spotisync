@@ -7,7 +7,7 @@ const globals = {
   clientId: secrets.clientId,
   clientSecret: secrets.clientSecret,
   redirectURI: 'http://localhost/callback',
-  scopes: 'user-read-email user-read-private user-modify-playback-state',
+  scopes: 'user-read-email user-read-private user-modify-playback-state user-read-playback-state',
   tokenURI: 'https://accounts.spotify.com/api/token',
   stateKey: 'spotify_auth_state',
   expressURL: 'http://localhost'

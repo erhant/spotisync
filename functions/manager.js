@@ -23,7 +23,6 @@ export function addUser(accessToken, refreshToken) {
           users.addUser(accessToken, refreshToken, body);
           console.log('Added user: '+body.id);
         }
-
     }
   })
 }
@@ -87,39 +86,68 @@ export function chooseTrack(req, res) {
     // console.log("SPOTIFY_URI: "+spotifyURI);
     let userArray = users.getUsers();
     userArray.forEach(async (user, index) => {
-      let options = {};
-      if (spotifyURI.includes("track")) {
-        options = {
-          url: 'https://api.spotify.com/v1/me/player/play',
-          headers: { Authorization: 'Bearer ' + user.accessToken },
-          body: {
-            uris: [spotifyURI]
-          },
-          json: true
-        }
+        let options = {};
+        if (spotifyURI.includes("track")) {
+          options = {
+            url: 'https://api.spotify.com/v1/me/player/play',
+            headers: { Authorization: 'Bearer ' + user.accessToken },
+            body: {
+              uris: [spotifyURI]
+            },
+            json: true
+          }
 
-      } else {
-        options = {
-          url: 'https://api.spotify.com/v1/me/player/play',
-          headers: { Authorization: 'Bearer ' + user.accessToken },
-          context: spotifyURI,
-          json: true
-        }
-      }
-
-      await request.put(options, function (error, response, body) {
-        console.log(utils.decodeStatusCode(response.statusCode))
-        if (error) {
-          errorHandler.handle(error);
         } else {
-           console.log('NEW TRACK STARTED FOR '+user.info.id+'\n')
+          options = {
+            url: 'https://api.spotify.com/v1/me/player/play',
+            headers: { Authorization: 'Bearer ' + user.accessToken },
+            context_uri: spotifyURI,
+            json: true
+          }
         }
-      })
 
-      if (index == userArray.length - 1) {
-        // If this was the last user redirect back
-        res.redirect('/');
+        await request.put(options, function (error, response, body) {
+          console.log(utils.decodeStatusCode(response.statusCode))
+          if (error) {
+            errorHandler.handle(error);
+          } else if (response.statusCode === 404) {
+            console.log()
+          } else {
+             console.log('NEW TRACK STARTED FOR '+user.info.id+'\n')
+          }
+        })
+
+        if (index == userArray.length - 1) {
+          // If this was the last user redirect back
+          res.redirect('/');
+        }
+    })
+  } else {
+    console.log('No track id given, use:\nlocalhost/chooseTrack?id={your_track_id_here}')
+  }
+}
+
+export function getDevices(req, res) {
+  let userArray = users.getUsers();
+  userArray.forEach(async (user, index) => {
+    let options = {
+      url: 'https://api.spotify.com/v1/me/player/devices',
+      headers: { Authorization: 'Bearer ' + user.accessToken },
+      json: true
+    }
+    await request.get(options, function (error, response, body) {
+      console.log(utils.decodeStatusCode(response.statusCode))
+      if (error) {
+        errorHandler.handle(error);
+      } else {
+        console.log("DEVICES FOR "+user.info.id+'\n')
+        console.log(body.devices);
       }
     })
-  }
+
+    if (index == userArray.length - 1) {
+      // If this was the last user redirect back
+      res.redirect('/');
+    }
+  })
 }

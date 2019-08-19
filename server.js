@@ -27,16 +27,8 @@ app.get('/stopTrack', (req, res) => { manager.stopTrack(req, res) } )
 app.get('/chooseTrack', (req, res) => { manager.chooseTrack(req, res) } )
 
 // Debug
-app.get('/debug/users', (req, res) => {
-  let arr = getUsers(req, res)
-  console.log(arr);
- })
-//app.get('/debug/activeDevices', (req, res) => { let devices = getActiveDevices(req, res);   console.log(devices);})
+app.get('/debug/users', (req, res) => {console.log(getUsers(req, res)) })
 app.get('/debug/refreshUsers', (req, res) => { refresh() } )
-app.get('/debug/playTrack', (req, res) => {
-  let trackURI = "spotify:track:3PJMsxg6rz9FOo6xNiASXz";
-  req.trackURI = trackURI;
-  manager.chooseTrack(req, res)
-})
+app.get('/debug/getDevices', (req, res) => { manager.getDevices(req, res) })
 
 app.listen(globals.expressPort, () => console.log(`Express: listening on port ${globals.expressPort}!`))
