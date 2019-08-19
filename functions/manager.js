@@ -38,7 +38,7 @@ export function startTrack(req, res) {
     }
 
     await request.put(options, function (error, response, body) {
-      responseHandler.decodeStatusCode(response.statusCode);
+      console.log(utils.decodeStatusCode(response.statusCode))
       if (error) {
          errorHandler.handle(error, statusCode);
       } else {
@@ -64,7 +64,7 @@ export function stopTrack(req, res) {
     }
 
     await request.put(options, function (error, response, body) {
-      responseHandler.decodeStatusCode(response.statusCode);
+      console.log(utils.decodeStatusCode(response.statusCode))
       if (error) {
         errorHandler.handle(error, statusCode);
       } else {
@@ -108,7 +108,7 @@ export function chooseTrack(req, res) {
       }
 
       await request.put(options, function (error, response, body) {
-        responseHandler.decodeStatusCode(response.statusCode);
+        console.log(utils.decodeStatusCode(response.statusCode))
         if (error) {
           errorHandler.handle(error);
         } else {
