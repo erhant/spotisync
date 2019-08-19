@@ -5,6 +5,7 @@ import { globals } from './../config.js'
 
 const clientId = globals.clientId
 const clientSecret = globals.secret
+
 // Performs a GET request that helps to check if the token expired
 export function checkToken (token) {
   let options = {
