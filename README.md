@@ -4,11 +4,14 @@ A simple program that will play the same song on multiple devices using differen
 ## Usage
 In the console type `npm start` to start the server. In doing so:
 * localhost/login -> Login to a Spotify account
+* localhost/users -> Display logged in users
+
+For the requests below the accounts must have an active device. We can not force an inactive device to play a song.
 * localhost/startTrack -> Continue the player
 * localhost/stopTrack -> Stop the player
-* localhost/chooseTrack?id={spotify_uri} -> Starts a track
+* localhost/chooseTrack?id={spotify_uri} -> Start a track on every user
 
-User must have an active device for these to work. We can not force an inactive device to play a song.
+Due to requests, the tracks are not perfectly at the same timeframe.
 
 ### Debugging
 * localhost/debug/users -> Print the users to server console
