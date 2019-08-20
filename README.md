@@ -14,9 +14,8 @@ For the requests below the accounts must have an active device. We can not force
 Due to requests, the tracks are not perfectly at the same timeframe.
 
 ### Debugging
-* localhost/debug/users -> Print the users to server console
 * localhost/debug/refreshUsers -> Refresh active tokens for each user
-* localhost/debug/getDevices -> Get device list for each user
+* localhost/debug/getDevices -> Get device list for each user to see who has which device and whether they are active or not
 
 ## Humiliation Disclaimer
 This code is written in a reaaallly sloppy way.
