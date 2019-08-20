@@ -41,6 +41,24 @@ export function refreshToken (refreshToken) {
   })
 }
 
+export function getTrackInfo(spotifyURI, accessToken) {
+  // First we need to obtain the id form the URI
+  let regex = /[^:]*$/; // Characters from the end until a ':' is seen is the id.
+  let trackId = regex.exec(spotifyURI);
+  let options = {
+    url: 'https://api.spotify.com/v1/tracks/'+trackId,
+    headers: { Authorization: 'Bearer ' + accessToken },
+    json: true
+  }
+  request.get(options, (error, res, body) => {
+    if (!error && res.statusCode === 200 || res.statusCode === 204) {
+      console.log('Track name: '+body.name+'\nArtist: '+body.artists[0].name+'\nAlbum: '+body.album.name);
+    } else {
+      console.log('Error retrieving track info');
+    }
+  })
+}
+
 export function generateRandomString (length) {
   let text = ''
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'

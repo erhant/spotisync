@@ -6,7 +6,7 @@ In the console type `npm start` to start the server. In doing so:
 ... localhost/login -> Login to a Spotify account
 ... localhost/startTrack -> Continue the player
 ... localhost/stopTrack -> Stop the player
-... localhost/chooseTrack?id={spotify_uri} -> Starts a track / album / artist
+... localhost/chooseTrack?id={spotify_uri} -> Starts a track
 
 User must have an active device for these to work. We can not force an inactive device to play a song.
 

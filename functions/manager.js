@@ -83,12 +83,10 @@ export function chooseTrack(req, res) {
   // read query string parameter
   if (req.query.id) {
     let spotifyURI = req.query.id;
-    // console.log("SPOTIFY_URI: "+spotifyURI);
     let userArray = users.getUsers();
+    utils.getTrackInfo(spotifyURI, userArray[0].accessToken); // this is async
     userArray.forEach(async (user, index) => {
-        let options = {};
-        if (spotifyURI.includes("track")) {
-          options = {
+        let options = {
             url: 'https://api.spotify.com/v1/me/player/play',
             headers: { Authorization: 'Bearer ' + user.accessToken },
             body: {
@@ -96,24 +94,14 @@ export function chooseTrack(req, res) {
             },
             json: true
           }
-
-        } else {
-          options = {
-            url: 'https://api.spotify.com/v1/me/player/play',
-            headers: { Authorization: 'Bearer ' + user.accessToken },
-            context_uri: spotifyURI,
-            json: true
-          }
-        }
-
         await request.put(options, function (error, response, body) {
           console.log(utils.decodeStatusCode(response.statusCode))
           if (error) {
             errorHandler.handle(error);
           } else if (response.statusCode === 404) {
-            console.log()
+            console.log('No Active Device for '+user.info.id+'\n');
           } else {
-             console.log('NEW TRACK STARTED FOR '+user.info.id+'\n')
+             console.log('NEW TRACK STARTED FOR '+user.info.id+'\n');
           }
         })
 
