@@ -1,5 +1,5 @@
 # spotisync
-A simple program that will play the same song on multiple devices using different Spotify accounts.
+A simple and sloppy program that will play the same song on multiple devices using different Spotify accounts. The author plans on writing a better version with an actual interface at a convenient episode of his lifetime.
 
 ## Usage
 In the console type `npm start` to start the server. In doing so:
