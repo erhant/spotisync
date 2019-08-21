@@ -7,6 +7,7 @@ import Util from './utils'
 export default class App extends React.Component {
   state = {
     state: undefined,
+    god: undefined,
     users: [],
     usernames: [], // For quicker searching
     trackQueue: [],
@@ -28,7 +29,7 @@ export default class App extends React.Component {
     }
 
     this.createPlayer(data)
-    const res = await fetch(
+    const resUserData = await fetch(
       'https://api.spotify.com/v1/me',
       {
         method: 'GET',
@@ -37,24 +38,54 @@ export default class App extends React.Component {
         }
       }
     )
-    const userData = await res.json()
+    // TODO: Refresh devices button (don't do a timed loop)
+    // TODO: Checkbox on the UI to enable/disable output
+    const resActiveDevices = await fetch(
+      'https://api.spotify.com/v1/me/player/devices',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${data}`
+        }
+      }
+    )
+    const activeDevices = await resActiveDevices.json()
+    const userData = await resUserData.json()
     // Make sure that the user does not already exist
     if (this.state.usernames.indexOf(userData.id) === -1) {
       const user = {
         id: userData.id,
-        token: data
+        token: data,
+        devices: [{
+          name: activeDevices.devices[0].name,
+          id: activeDevices.devices[0].id
+        }]
       }
-      await this.setState({
-        users: [...this.state.users, user],
-        usernames: [...this.state.usernames, userData.id]
-      })
+
+      // When there are no users, the first will be the god
+      if (this.state.usernames.length === 0){
+        await this.setState({
+          god: user,
+          users: [...this.state.users, user],
+          usernames: [...this.state.usernames, userData.id]
+        })
+      } else {
+        await this.setState({
+          users: [...this.state.users, user],
+          usernames: [...this.state.usernames, userData.id]
+        })
+      }
     } else {
       return console.error('ERROR: User already exists')
     }
   }
 
-  handleRemoveUser = async (event) => {
-    const index = await event.target.getAttribute('data-tag')
+  updateTrack = async (e) => {
+
+  }
+
+  handleRemoveUser = async (e) => {
+    const index = await e.target.getAttribute('data-tag')
     if (index > -1) {
       const tempUserArray = await [...this.state.users]
       const tempUsernameArray = await [...this.state.usernames]

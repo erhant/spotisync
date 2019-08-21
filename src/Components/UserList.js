@@ -10,7 +10,7 @@ export default class UserList extends React.Component {
           <p><b>User ID:</b> {element.id}</p>
           <p><b>User Token:</b> {element.token}</p>
           <p><b>Index</b> {counter}</p>
-          <button onClick={this.props.onRemoveUser} data-tag={counter}>X</button>
+          <button onClick={this.props.onRemoveUser} data-tag={counter}>Delete User</button>
         </div>
       )
     })
