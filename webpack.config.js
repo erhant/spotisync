@@ -1,36 +1,27 @@
-// Autogenerate html file
+const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  // Chosen mode tells webpack to use its built-in optimizations accordingly
   mode: 'development', // "production" | "development" | "none"
-  // Relative to root of the application
-  // Defaults to ./src
-  entry: './frontend/Index.jsx', // String | Object | Array
+  entry: {
+    main: './src/index.js',
+    callback: './src/oauthCallback.js'
+  }, // String | Object | Array
   devtool: 'source-map',
-  // Options related to how webpack emits results
   output: {
-    // Filename template for entry chunks
-    filename: './public/bundle.js' // String
+    filename: '[name].[hash].js', // String
+    path: path.resolve(__dirname, 'dist')
   },
   optimization: {
-    // Minimize the code
     minimize: false // Boolean
   },
   devServer: {
-    // Served over HTTP/2 with HTTP
-    // Specify a host to use
     host: 'localhost', // String
-    // Specify port
+    contentBase: './dist', // String
     port: 80, // Number
-    // Enable webpack's Hot Module Replacement feature
     hot: true, // Boolean
-    // Scripts will be inserted in the bundle to take care of live reloading,
-    // and build messages will appear in the browser console
     inline: true, // boolean
-    // Shows a full-screen overlay in the browser when there are compiler errors or warnings
     overlay: true, // boolean
-    // Open the app after server start
     open: true // boolean
   },
   module: {
@@ -62,15 +53,16 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      // Will add a unique hash to the src of the embedded <script> tag
-      hash: true, // Boolean
-      // Relative to root of the application
-      filename: './index.html', // String
-      // Title of the html document
+      filename: 'index.html', // String
       title: 'Spotisync', // String
-      // Template html document to use when generating
-      // Relative to root of the application
-      template: './frontend/index.html' // String
+      template: './public/index.html', // String
+      chunks: ['main'] // Array
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'callback.html', // String
+      title: 'Spotisync - Callback', // String
+      template: './public/callback.html',
+      chunks: ['callback'] // Array
     })
   ]
 }

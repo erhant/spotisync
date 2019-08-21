@@ -1,34 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
   <head>
-    <meta charset="utf-8">
-    <title>Spotisync</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="SpotiSync"/>
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <script src="http://localhost:80/webpack-dev-server.js"></script>
   </head>
   <body>
-	<script>
-	function buttonClick() {
-		console.log('Making me a request');
-		let xhr = new XMLHttpRequest();
-		xhr.open("GET", "http://localhost/login")
-		xhr.send();
-		
-		
-		xhr.onload = function() {
-		  alert(`Loaded: ${xhr.status} ${xhr.response}`);
-		};
-
-		xhr.onerror = function() { // only triggers if the request couldn't be made at all
-		  alert(`Network Error`);
-		};
-
-		xhr.onprogress = function(event) { // triggers periodically
-		  // event.loaded - how many bytes downloaded
-		  // event.lengthComputable = true if the server sent Content-Length header
-		  // event.total - total number of bytes (if lengthComputable)
-		  alert(`Received ${event.loaded} of ${event.total}`);
-		};
-	}
-	</script>
-	<button onClick="buttonClick()"> Login </button>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
   </body>
 </html>
