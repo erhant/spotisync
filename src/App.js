@@ -12,12 +12,15 @@ export default class App extends React.Component {
     usernames: [], // For quicker searching
     trackQueue: [],
     ready: undefined,
-    hasLoadListener: undefined
+    hasLoadListener: undefined,
+    currentTrack: undefined
   }
 
   componentDidMount () {
     // See if the browser has finished loading all resources to avoid errors
     window.addEventListener('load', this.setState({ ready: true, hasLoadListener: true }))
+    // Start data refresh loop
+    this.refreshData()
   }
 
   // Get user info and create a user object in state
@@ -49,39 +52,71 @@ export default class App extends React.Component {
         }
       }
     )
-    const activeDevices = await resActiveDevices.json()
-    const userData = await resUserData.json()
-    // Make sure that the user does not already exist
-    if (this.state.usernames.indexOf(userData.id) === -1) {
-      const user = {
-        id: userData.id,
-        token: data,
-        devices: [{
-          name: activeDevices.devices[0].name,
-          id: activeDevices.devices[0].id
-        }]
-      }
+    // TODO: Should probably allow for there to be no active devices
+    if ( resUserData.status === 200 && resActiveDevices.status === 200 ) {
+      const activeDevices = await resActiveDevices.json()
+      const userData = await resUserData.json()
+      // Make sure that the user does not already exist
+      if (this.state.usernames.indexOf(userData.id) === -1) {
+        const user = {
+          id: userData.id,
+          token: data,
+          devices: [{
+            name: activeDevices.devices[0].name,
+            id: activeDevices.devices[0].id
+          }]
+        }
 
-      // When there are no users, the first will be the god
-      if (this.state.usernames.length === 0){
-        await this.setState({
-          god: user,
-          users: [...this.state.users, user],
-          usernames: [...this.state.usernames, userData.id]
-        })
+        // When there are no users, the first will be the god
+        if (this.state.usernames.length === 0){
+          await this.setState({
+            god: user,
+            users: [...this.state.users, user],
+            usernames: [...this.state.usernames, userData.id]
+          })
+        } else {
+          await this.setState({
+            users: [...this.state.users, user],
+            usernames: [...this.state.usernames, userData.id]
+          })
+        }
       } else {
-        await this.setState({
-          users: [...this.state.users, user],
-          usernames: [...this.state.usernames, userData.id]
-        })
+        return console.error('ERROR: User already exists')
       }
     } else {
-      return console.error('ERROR: User already exists')
+      return console.error(`ERROR: Received a ${resUserData.status} status when fetching user data and a ${resActiveDevices.status} status when fetching active device data`)
     }
   }
 
   updateTrack = async (e) => {
-
+    if (this.state.god) {
+        const resTrackData = await fetch(
+          'https://api.spotify.com/v1/me/player/currently-playing',
+          {
+            method: 'GET',
+            headers: {
+              Authorization: 'Bearer ' + this.state.god.token
+            }
+          }
+        )
+        if (resTrackData.status === 200) {
+          const trackData = await resTrackData.json()
+          let authorArray = []
+          for (let i = 0; i < trackData.item.artists.length; i++) {
+            authorArray.push(trackData.item.artists[i].name)
+          }
+          const authors = authorArray.join(', ')
+          const trackObj = {
+            name: trackData.item.name,
+            authors: authors
+          }
+          this.setState({currentTrack: trackObj})
+        } else {
+          return console.error(`ERROR: Received a ${resTrackData.status} status when updating track (most likely nothing is playing)`)
+        }
+    } else {
+      return console.error('ERROR: God does not exist (most likely no users added)')
+    }
   }
 
   handleRemoveUser = async (e) => {
@@ -169,12 +204,19 @@ export default class App extends React.Component {
     }
   }
 
+  refreshData = async () => {
+    if (this.state.god !== undefined) {
+      this.updateTrack()
+    }
+    setTimeout(this.refreshData, 1000)
+  }
+
   render () {
     return (
       <div>
         <div>
           <UserList onLogin={this.handleUserLogin} onRemoveUser={this.handleRemoveUser} users={this.state.users} />
-          <NowPlaying />
+          <NowPlaying track={this.state.currentTrack}/>
         </div>
       </div>
     )
