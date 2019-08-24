@@ -1,0 +1,33 @@
+.NowPlaying {
+  overflow-y: hidden;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.NowPlaying img {
+  min-height: 100%;
+  object-fit: cover;
+}
+
+.TrackInfo {
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(29, 185, 84, 0.8);
+  z-index: 1;
+  position: fixed;
+  text-shadow: 10px;
+  padding: 12px 12px 12px 16px;
+}
+
+.TrackInfo h1 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.TrackInfo h2 {
+  font-size: 20px;
+  font-weight: 400;
+  opacity: 0.6;
+}

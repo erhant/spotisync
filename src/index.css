@@ -1,5 +1,47 @@
-body {
+/* Import Open Sans */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    box-sizing: border-box;
+}
+
+button:focus {
+  outline: 0;
+}
+
+a, blockquote, body, code, div, footer, form, h1, h2, h3, h4, h5, h6, header html, i img, li, menu, nav,, ol, p, section, span, strike, strong, sub, sup, u, ul, var {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  border: 0;
+  vertical-align: baseline;
+  color: #fff
+}
+
+html {
+    scrollbar-color: hsla(0, 0%, 100%, .3) transparent;
+    scrollbar-width: auto;
+    background-color: #181818;
+    height: 100%;
+}
+
+::-webkit-scrollbar {
+    width: 16px
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: hsla(0, 0%, 100%, .3)
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition-property: background;
+  transition-duration: .5s;
+  transition-timing-function: cubic-bezier(.3,0,.4,1);
+  min-height: 100vh;
 }
