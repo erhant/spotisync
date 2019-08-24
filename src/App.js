@@ -3,6 +3,7 @@ import NowPlaying from './Components/NowPlaying'
 import UserList from './Components/UserList'
 import OAuthConfig from './oauthConfig'
 import Util from './utils'
+import './App.css'
 
 export default class App extends React.Component {
   state = {
@@ -10,7 +11,6 @@ export default class App extends React.Component {
     god: undefined,
     users: [],
     usernames: [], // For quicker searching
-    trackQueue: [],
     ready: undefined,
     hasLoadListener: undefined,
     currentTrack: undefined
@@ -41,7 +41,6 @@ export default class App extends React.Component {
         }
       }
     )
-    // TODO: Refresh devices button (don't do a timed loop)
     // TODO: Checkbox on the UI to enable/disable output
     const resActiveDevices = await fetch(
       'https://api.spotify.com/v1/me/player/devices',
@@ -58,7 +57,7 @@ export default class App extends React.Component {
       const userData = await resUserData.json()
       // Make sure that the user does not already exist
       if (this.state.usernames.indexOf(userData.id) === -1) {
-        const user = {
+        let user = {
           id: userData.id,
           token: data,
           devices: [{
@@ -69,12 +68,14 @@ export default class App extends React.Component {
 
         // When there are no users, the first will be the god
         if (this.state.usernames.length === 0){
+          user.isGod = true
           await this.setState({
             god: user,
             users: [...this.state.users, user],
             usernames: [...this.state.usernames, userData.id]
           })
         } else {
+          user.isGod = false
           await this.setState({
             users: [...this.state.users, user],
             usernames: [...this.state.usernames, userData.id]
@@ -84,7 +85,7 @@ export default class App extends React.Component {
         return console.error('ERROR: User already exists')
       }
     } else {
-      return console.error(`ERROR: Received a ${resUserData.status} status when fetching user data and a ${resActiveDevices.status} status when fetching active device data`)
+      return console.debug(`DEBUG: Received a ${resUserData.status} status when fetching user data and a ${resActiveDevices.status} status when fetching active device data`)
     }
   }
 
@@ -108,14 +109,20 @@ export default class App extends React.Component {
           const authors = authorArray.join(', ')
           const trackObj = {
             name: trackData.item.name,
-            authors: authors
+            authors: authors,
+            album: {
+              name: trackData.item.album.name,
+              cover: trackData.item.album.images[0].url
+            }
           }
           this.setState({currentTrack: trackObj})
         } else {
-          return console.error(`ERROR: Received a ${resTrackData.status} status when updating track (most likely nothing is playing)`)
+          this.setState({currentTrack: undefined})
+          return console.debug(`DEBUG: Received a ${resTrackData.status} status when updating track (most likely nothing is playing)`)
         }
     } else {
-      return console.error('ERROR: God does not exist (most likely no users added)')
+      this.setState({currentTrack: undefined})
+      return console.debug('DEBUG: God does not exist (most likely no users added)')
     }
   }
 
@@ -126,6 +133,9 @@ export default class App extends React.Component {
       const tempUsernameArray = await [...this.state.usernames]
       tempUserArray.splice(index, 1)
       tempUsernameArray.splice(index, 1)
+      if (this.state.users[index].isGod === true) {
+        await this.setState({god: undefined})
+      }
       await this.setState({
         users: tempUserArray,
         usernames: tempUsernameArray
@@ -160,7 +170,7 @@ export default class App extends React.Component {
         // Check if there is data coming from the event
         if (token) {
         // Log out the new user to avoid session saving problems
-        oauthWindow.location.assign('https://spotify.com/logout')
+        // oauthWindow.location.assign('https://spotify.com/logout')
         // TODO: Close pop-up after the auth and logout process is done
         } else {
           reject(console.error('ERROR: Message event does not contain data'))
@@ -205,19 +215,15 @@ export default class App extends React.Component {
   }
 
   refreshData = async () => {
-    if (this.state.god !== undefined) {
-      this.updateTrack()
-    }
-    setTimeout(this.refreshData, 1000)
+    this.updateTrack()
+    setTimeout(this.refreshData, 2000)
   }
 
   render () {
     return (
-      <div>
-        <div>
+      <div className={'App'}>
           <UserList onLogin={this.handleUserLogin} onRemoveUser={this.handleRemoveUser} users={this.state.users} />
           <NowPlaying track={this.state.currentTrack}/>
-        </div>
       </div>
     )
   }
