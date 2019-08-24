@@ -170,7 +170,7 @@ export default class App extends React.Component {
         // Check if there is data coming from the event
         if (token) {
         // Log out the new user to avoid session saving problems
-        // oauthWindow.location.assign('https://spotify.com/logout')
+        oauthWindow.location.assign('https://spotify.com/logout')
         // TODO: Close pop-up after the auth and logout process is done
         } else {
           reject(console.error('ERROR: Message event does not contain data'))
