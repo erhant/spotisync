@@ -1,0 +1,89 @@
+.UserList {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  list-style: none;
+  margin: 0;
+  width: 230px;
+  background-color: #000;
+  min-height: 100vh;
+}
+
+.UserList div {
+  display: inline;
+  position: relative;
+}
+
+.UserList > span {
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  padding: 10px 16px 0 16px;
+  opacity: 0.6;
+}
+
+.UserListButton {
+  color: #fff;
+  background-color: transparent;
+  border: none;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.UserListButton svg {
+  width: 32px;
+  height: 32px;
+  background: #fff;
+  padding: 4px;
+}
+
+.UserListButton path {
+  fill: #000;
+}
+
+/* START add user item */
+.AddUserItem {
+  padding: 20px 16px 20px 16px;
+}
+
+.AddUserItem button {
+  letter-spacing: .015em;
+  line-height: 20px;
+  font-size: 14px;
+  opacity: 0.6;
+  font-weight: 700;
+  transition: opacity .2s linear;
+}
+
+.AddUserItem button:hover {
+  opacity: 1;
+}
+
+.AddUserItem svg {
+  margin-right:16px;
+}
+/* END add user item */
+
+/* START user item */
+.UserItem {
+  padding: 10px 16px 10px 16px;
+  opacity: 0.6;
+}
+
+.UserItem span {
+  line-height: 20px;
+  font-size: 18px;
+  font-weight: 400;
+  color: #fff;
+  transition: all .2s linear;
+}
+
+.UserItem span:hover {
+  color: #f00;
+  text-decoration: line-through;
+}
+/* END user item */
